@@ -4,10 +4,12 @@ import TaskFilter from "./components/TaskFilter.jsx";
 import TaskList from "./components/TaskList.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const PAGE_SIZE = 6;
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState("All");
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -38,6 +40,7 @@ function App() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Failed to add task.");
       setTasks(previous => [data, ...previous]);
+      setPage(1);
     } catch (err) { setError(err.message); }
   }
 
@@ -71,6 +74,9 @@ function App() {
     if (filter === "Completed") return task.completed;
     return true;
   });
+  const pageCount = Math.max(1, Math.ceil(filteredTasks.length / PAGE_SIZE));
+  const currentPage = Math.min(page, pageCount);
+  const visibleTasks = filteredTasks.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   const remainingTasks = tasks.filter(task => !task.completed).length;
 
@@ -88,10 +94,23 @@ function App() {
 
         <TaskForm onAddTask={addTask} />
         {error && <div className="error-message">{error}</div>}
-        <TaskFilter filter={filter} onFilterChange={setFilter} />
+        <TaskFilter filter={filter} onFilterChange={nextFilter => { setFilter(nextFilter); setPage(1); }} />
 
         {loading ? <div className="status-message">Loading tasks...</div> :
-          <TaskList tasks={filteredTasks} onToggle={toggleTask} onDelete={deleteTask} />}
+          <>
+            <TaskList tasks={visibleTasks} onToggle={toggleTask} onDelete={deleteTask} />
+            {filteredTasks.length > PAGE_SIZE && (
+              <nav className="pagination" aria-label="Task pages">
+                <button type="button" onClick={() => setPage(currentPage - 1)} disabled={currentPage === 1}>
+                  Previous
+                </button>
+                <span>Page {currentPage} of {pageCount}</span>
+                <button type="button" onClick={() => setPage(currentPage + 1)} disabled={currentPage === pageCount}>
+                  Next
+                </button>
+              </nav>
+            )}
+          </>}
       </section>
     </main>
   );
