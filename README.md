@@ -98,12 +98,3 @@ VITE_API_URL=https://your-deployed-backend/api
 ```
 
 Do not upload `.env` to GitHub.
-
-## Team delegation
-**Member 1:** React App/state/API integration  
-**Member 2:** TaskForm, TaskItem, TaskList, TaskFilter/UI  
-**Member 3:** Express server, routes, controllers/API  
-**Member 4:** MongoDB Atlas, model, database connection, Render/deployment/testing
-
-## Guided-project alignment
-The React portion retains the guide's Task Manager concepts: components, props, state, events, `map()`, `filter()`, adding, toggling, deleting, filtering, and remaining count. The backend/database is the added persistence and deployment layer.
