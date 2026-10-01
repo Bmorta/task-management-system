@@ -1,100 +1,134 @@
-# Capstone 3 - Task Manager
+# Task Management System
 
-Full-stack React Task Manager based on the MSTCONNECT PH Project 1 guided project, extended with the required Node.js/Express backend and MongoDB Atlas persistence.
+A full-stack task management application built with React, Node.js, Express, and MongoDB. The application allows users to create, complete, filter, and delete tasks through a responsive web interface.
 
-## Features
-- Add tasks
-- Display tasks
-- Complete / undo tasks
+## 🚀 Live Demo
+
+**Live Application:**  
+https://task-management-system-67yq.onrender.com/
+
+---
+
+## 📌 Overview
+
+The Task Management System is a full-stack web application designed to demonstrate the integration of a React frontend with a RESTful backend API and MongoDB database.
+
+Users can manage their tasks through a simple and responsive interface while task data is stored persistently in MongoDB.
+
+This project demonstrates practical full-stack development concepts including:
+
+- React components
+- React state management
+- Event handling
+- REST API integration
+- Node.js and Express
+- MongoDB and Mongoose
+- CRUD operations
+- Environment variables
+- Frontend and backend deployment
+- API communication between separate services
+
+---
+
+## ✨ Features
+
+### Task Management
+
+- Add new tasks
+- Mark tasks as completed
+- Mark completed tasks as active
 - Delete tasks
-- All / Active / Completed filters
-- Remaining task count
-- MongoDB persistence
-- REST API
-- React frontend
-
-## Stack
-**Frontend:** React + Vite  
-**Backend:** Node.js + Express  
-**Database:** MongoDB Atlas  
-**Deployment:** Render
-
-## Structure
-```text
-capstone3-task-manager/
-├── client/
-│   └── src/
-│       ├── components/
-│       │   ├── TaskForm.jsx
-│       │   ├── TaskItem.jsx
-│       │   ├── TaskList.jsx
-│       │   └── TaskFilter.jsx
-│       ├── App.jsx
-│       ├── main.jsx
-│       └── styles.css
-├── server/
-│   ├── config/db.js
-│   ├── controllers/taskController.js
-│   ├── models/Task.js
-│   ├── routes/taskRoutes.js
-│   ├── .env.example
-│   ├── package.json
-│   └── server.js
-├── .gitignore
-└── README.md
-```
-
-## Local setup
-
-### Backend
-```bash
-cd server
-npm install
-```
-
-Copy `.env.example` to `.env` and set:
-```env
-PORT=5000
-MONGODB_URI=your_mongodb_atlas_connection_string
-CLIENT_URL=http://localhost:5173
-```
-
-Start:
-```bash
-npm run dev
-```
+- View all tasks
+- Filter tasks by status
+- Display remaining task count
 
 ### Frontend
-Open a second terminal:
-```bash
-cd client
-npm install
-npm run dev
-```
 
-For a deployed frontend, set:
-```env
-VITE_API_URL=https://YOUR-BACKEND-URL/api
-```
+- Responsive user interface
+- React component-based architecture
+- Controlled form inputs
+- Dynamic task rendering
+- Loading and error states
+- API integration using `fetch()`
 
-## API
+### Backend
+
+- RESTful API
+- Create, read, update, and delete task operations
+- Express.js routing
+- MongoDB database integration
+- Mongoose data modeling
+- CORS configuration
+- Environment variable configuration
+
+---
+
+## 🛠️ Technologies Used
+
+### Frontend
+
+- React
+- JavaScript
+- HTML5
+- CSS3
+- Vite
+
+### Backend
+
+- Node.js
+- Express.js
+- REST API
+- Mongoose
+
+### Database
+
+- MongoDB
+- MongoDB Atlas
+
+### Deployment
+
+- Render
+- GitHub
+
+---
+
+## 📂 Project Structure
+
 ```text
-GET    /api/tasks
-POST   /api/tasks
-PATCH  /api/tasks/:id
-DELETE /api/tasks/:id
-```
-
-## Render
-Backend environment variables:
-```text
-MONGODB_URI=your MongoDB Atlas connection string
-CLIENT_URL=your deployed frontend URL
-```
-
-Frontend environment variable:
-```text
-VITE_API_URL=https://your-deployed-backend/api
-```
-
-Do not upload `.env` to GitHub.
+task-management-system/
+│
+├── client/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── TaskForm.jsx
+│   │   │   ├── TaskItem.jsx
+│   │   │   ├── TaskList.jsx
+│   │   │   └── TaskFilter.jsx
+│   │   │
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── styles.css
+│   │
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
+│
+├── server/
+│   ├── config/
+│   │   └── db.js
+│   │
+│   ├── controllers/
+│   │   └── taskController.js
+│   │
+│   ├── models/
+│   │   └── Task.js
+│   │
+│   ├── routes/
+│   │   └── taskRoutes.js
+│   │
+│   ├── server.js
+│   ├── package.json
+│   └── .env.example
+│
+├── .gitignore
+└── README.md
