@@ -35,12 +35,18 @@ async function api(path, options = {}, token = localStorage.getItem(TOKEN_KEY)) 
 
 function Brand({ compact = false }) {
   return <div className={`brand ${compact ? "compact" : ""}`}>
-    <div className="brand-logo"><span>✓</span></div>
+    <div className="brand-logo"><img src="/taskflow-logo.svg" alt="TaskFlow" /></div>
     <div><strong>TaskFlow</strong><span>Work & Study Workspace</span></div>
   </div>;
 }
 
-function AuthShell({ mode, onModeChange, onAuthenticated }) {
+function ThemeToggle({ theme, onToggle }) {
+  return <button className="theme-toggle" type="button" onClick={onToggle} aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"} title={theme === "dark" ? "Light mode" : "Dark mode"}>
+    <span>{theme === "dark" ? "☀" : "☾"}</span><small>{theme === "dark" ? "Light" : "Dark"}</small>
+  </button>;
+}
+
+function AuthShell({ mode, onModeChange, onAuthenticated, theme, onToggleTheme }) {
   const [form, setForm] = useState({ firstName:"", lastName:"", email:"", password:"", confirmPassword:"", phone:"", department:"", accountType:"Office" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -72,7 +78,7 @@ function AuthShell({ mode, onModeChange, onAuthenticated }) {
     }
   }
 
-  return <main className="auth-page">
+  return <main className={`auth-page ${theme === "dark" ? "theme-dark" : ""}`}>
     <div className="auth-orbit orbit-one"></div><div className="auth-orbit orbit-two"></div>
     <section className="auth-layout">
       <div className="auth-story">
@@ -90,7 +96,7 @@ function AuthShell({ mode, onModeChange, onAuthenticated }) {
         <small className="auth-foot">Built for focused work & meaningful progress.</small>
       </div>
 
-      <div className="auth-card-wrap">
+      <div className="auth-card-wrap"><ThemeToggle theme={theme} onToggle={onToggleTheme} />
         <div className="auth-card">
           <div className="mobile-brand"><Brand compact /></div>
           <div className="auth-heading">
@@ -208,13 +214,15 @@ function Dashboard({ user, onLogout, onProfile }) {
 
 function App() {
   const [auth,setAuth]=useState(null),[authMode,setAuthMode]=useState("login"),[view,setView]=useState("dashboard"),[checking,setChecking]=useState(true);
+  const [theme,setTheme]=useState(()=>localStorage.getItem("taskflow_theme")||"light");
+  function toggleTheme(){setTheme(previous=>{const next=previous==="dark"?"light":"dark";localStorage.setItem("taskflow_theme",next);return next})}
   useEffect(()=>{const token=localStorage.getItem(TOKEN_KEY);if(!token){setChecking(false);return}api("/auth/me",{},token).then(data=>setAuth(data.user)).catch(()=>{localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY)}).finally(()=>setChecking(false))},[]);
   function logout(){localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY);setAuth(null);setView("dashboard");setAuthMode("login")}
-  if(checking)return <div className="loading-screen"><div className="loading-logo">✓</div><strong>Loading TaskFlow</strong><span>Preparing your workspace...</span></div>;
-  if(!auth)return <AuthShell mode={authMode} onModeChange={setAuthMode} onAuthenticated={setAuth}/>;
+  if(checking)return <div className={`loading-screen ${theme === "dark" ? "theme-dark" : ""}`}><div className="loading-logo"><img src="/taskflow-logo.svg" alt="TaskFlow"/></div><strong>Loading TaskFlow</strong><span>Preparing your workspace...</span></div>;
+  if(!auth)return <AuthShell mode={authMode} onModeChange={setAuthMode} onAuthenticated={setAuth} theme={theme} onToggleTheme={toggleTheme}/>;
 
-  return <main className="app-shell">
-    <nav className="navbar"><Brand/><div className="nav-center"><button className={view==="dashboard"?"active":""} onClick={()=>setView("dashboard")}>Dashboard</button><button className={view==="profile"?"active":""} onClick={()=>setView("profile")}>My Profile</button>{auth.role==="admin"&&<button className={view==="users"?"active":""} onClick={()=>setView("users")}>Users</button>}</div><div className="nav-user"><div><strong>Hello, {auth.firstName}!</strong><span>{dateTime(new Date())}</span></div><button className="avatar-button" onClick={()=>setView("profile")}><span className="profile-avatar">{initials(auth)}</span></button><button className="logout-btn" onClick={logout}>Log out</button></div></nav>
+  return <main className={`app-shell ${theme === "dark" ? "theme-dark" : ""}`}>
+    <nav className="navbar"><Brand/><div className="nav-center"><button className={view==="dashboard"?"active":""} onClick={()=>setView("dashboard")}>Dashboard</button><button className={view==="profile"?"active":""} onClick={()=>setView("profile")}>My Profile</button>{auth.role==="admin"&&<button className={view==="users"?"active":""} onClick={()=>setView("users")}>Users</button>}</div><div className="nav-tools"><ThemeToggle theme={theme} onToggle={toggleTheme}/><div className="nav-user"><div><strong>Hello, {auth.firstName}!</strong><span>{dateTime(new Date())}</span></div><button className="avatar-button" onClick={()=>setView("profile")}><span className="profile-avatar">{initials(auth)}</span></button><button className="logout-btn" onClick={logout}>Log out</button></div></nav>
     {view==="dashboard"&&<Dashboard user={auth} onLogout={logout}/>}
     {view==="profile"&&<Profile user={auth} onUserChange={setAuth} onLogout={logout}/>}
     {view==="users"&&auth.role==="admin"&&<AdminUsers currentUser={auth}/>}
