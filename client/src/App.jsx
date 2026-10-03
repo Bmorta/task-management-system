@@ -35,7 +35,7 @@ async function api(path, options = {}, token = localStorage.getItem(TOKEN_KEY)) 
 
 function Brand({ compact = false }) {
   return <div className={`brand ${compact ? "compact" : ""}`}>
-    <div className="brand-logo"><img src="/taskflow-logo.svg" alt="TaskFlow" /></div>
+    <div className="brand-logo"><img src="/taskflow-logo.png" alt="TaskFlow" /></div>
     <div><strong>TaskFlow</strong><span>Work & Study Workspace</span></div>
   </div>;
 }
@@ -228,7 +228,7 @@ function App() {
   function toggleTheme(){setTheme(previous=>{const next=previous==="dark"?"light":"dark";localStorage.setItem("taskflow_theme",next);return next})}
   useEffect(()=>{const token=localStorage.getItem(TOKEN_KEY);if(!token){setChecking(false);return}api("/auth/me",{},token).then(data=>setAuth(data.user)).catch(()=>{localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY)}).finally(()=>setChecking(false))},[]);
   function logout(){localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY);setAuth(null);setView("dashboard");setAuthMode("login")}
-  if(checking)return <div className={`loading-screen ${theme === "dark" ? "theme-dark" : ""}`}><div className="loading-logo"><img src="/taskflow-logo.svg" alt="TaskFlow"/></div><strong>Loading TaskFlow</strong><span>Preparing your workspace...</span></div>;
+  if(checking)return <div className={`loading-screen ${theme === "dark" ? "theme-dark" : ""}`}><div className="loading-logo"><img src="/taskflow-logo.png" alt="TaskFlow" /></div><strong>Loading TaskFlow</strong><span>Preparing your workspace...</span></div>;
   if(!auth)return <AuthShell mode={authMode} onModeChange={setAuthMode} onAuthenticated={setAuth} theme={theme} onToggleTheme={toggleTheme}/>;
 
   return <main className={`app-shell ${theme === "dark" ? "theme-dark" : ""}`}>
