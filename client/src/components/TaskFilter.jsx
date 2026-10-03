@@ -1,12 +1,10 @@
-function TaskFilter({ filter, onFilterChange }) {
-  const filters = ["All", "Active", "Completed"];
-  return (
-    <div className="filter-bar">
-      {filters.map(item => (
-        <button type="button" key={item} className={filter === item ? "active" : ""}
-          onClick={() => onFilterChange(item)}>{item}</button>
-      ))}
-    </div>
-  );
+function TaskFilter({ filter, onFilterChange, counts }) {
+  const filters = [
+    ["All", counts.total],
+    ["Active", counts.active],
+    ["Completed", counts.completed],
+    ["Overdue", counts.overdue]
+  ];
+  return <div className="filters">{filters.map(([name,count]) => <button key={name} className={filter===name ? "active" : ""} onClick={() => onFilterChange(name)}>{name}<span>{count}</span></button>)}</div>;
 }
 export default TaskFilter;
