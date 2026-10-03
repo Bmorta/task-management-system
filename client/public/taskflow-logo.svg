@@ -1,7 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".52" stop-color="#fff"/><stop offset="1" stop-color="#f4a261"/></linearGradient></defs>
-<path fill="url(#g)" d="M128 72h166c51 0 92 41 92 92 0 20-7 39-18 54l-47 63c-17 23-44 37-73 37H144c-30 0-58-14-76-38l-29-39h103l43 57h59l55-73c8-11 12-23 12-36 0-34-28-62-62-62H128c-20 0-36 16-36 36s16 36 36 36h83l-38 50h-81c-47 0-85-38-85-85s38-85 85-85h36z"/>
-<path fill="#f4a261" d="M76 205h151l-35 46H76c-13 0-23-10-23-23s10-23 23-23z"/>
-<path fill="#202126" d="M300 146h47l-71 93-40-40 32-32 10 10z"/>
-<path fill="#f4a261" d="M70 292h72l-27 36H70c-10 0-18-8-18-18s8-18 18-18z"/>
+<defs>
+  <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd39b"/><stop offset=".48" stop-color="#f5a15d"/><stop offset="1" stop-color="#ff5a0a"/></linearGradient>
+  <linearGradient id="white" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#f4e9df"/></linearGradient>
+  <linearGradient id="dark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#30333d"/><stop offset="1" stop-color="#101117"/></linearGradient>
+</defs>
+<!-- orange outer flow -->
+<path fill="url(#orange)" d="M235 39h128c63 0 114 51 114 114 0 27-9 52-25 72l-61 78c-22 29-56 46-92 46H205c-36 0-69-17-91-46l-35-47h105l35 46h73c14 0 27-7 36-18l57-73c8-11 12-25 12-38 0-36-29-65-65-65H235c-18 0-32 14-32 32 0 17 14 31 32 31h76l-39 51h-76c-45 0-82-37-82-82s37-82 82-82h7z"/>
+<!-- upper white flow -->
+<path fill="url(#white)" d="M164 62h199c21 0 38 17 38 38v10H190c-11 0-21 9-21 21 0 11 10 21 21 21h117l-38 51H164c-39 0-70-32-70-70 0-39 31-71 70-71z"/>
+<!-- dark center -->
+<path fill="url(#dark)" d="M171 151h154l-54 70 39 39 70-91c7-9 10-20 10-31 0-29-24-52-53-52H171c-12 0-22 10-22 22s10 22 22 22h91l-28 36h-63z"/>
+<!-- white lower flow -->
+<path fill="url(#white)" d="M88 229h171l-39 51H88c-15 0-27-11-27-25s12-26 27-26z"/>
+<!-- orange motion bars -->
+<rect fill="url(#orange)" x="76" y="151" width="166" height="42" rx="21"/>
+<rect fill="url(#orange)" x="50" y="335" width="92" height="38" rx="19"/>
+<!-- check -->
+<path fill="url(#orange)" d="M266 205l39 39 70-91 35 28-91 118c-8 10-20 16-33 16-11 0-22-4-30-12l-58-58 31-31 37 37z"/>
 </svg>
