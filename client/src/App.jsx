@@ -96,6 +96,16 @@ function App() {
     return { total: tasks.length, completed, active: tasks.length - completed, overdue };
   }, [tasks]);
 
+  async function clearCompleted() {
+    const completed = tasks.filter(task => task.completed);
+    if (!completed.length) return;
+    try {
+      const results = await Promise.all(completed.map(task => fetch(`${API_URL}/tasks/${task._id}`, { method: "DELETE" })));
+      if (results.some(response => !response.ok)) throw new Error("Some completed tasks could not be deleted.");
+      setTasks(previous => previous.filter(task => !task.completed));
+    } catch (err) { setError(err.message); }
+  }
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
     const result = tasks.filter(task => {
@@ -141,7 +151,7 @@ function App() {
         {error && <div className="error">{error}<button onClick={() => setError("")}>×</button></div>}
 
         <section className="workspace">
-          <div className="workspace-head"><div><h2>Your Tasks</h2><p>Manage and track your work from one dashboard.</p></div>{stats.completed > 0 && <button className="clear" onClick={() => setTasks(previous => previous.filter(task => !task.completed))}>Clear completed</button>}</div>
+          <div className="workspace-head"><div><h2>Your Tasks</h2><p>Manage and track your work from one dashboard.</p></div>{stats.completed > 0 && <button className="clear" onClick={clearCompleted}>Clear completed</button>}</div>
 
           <div className="toolbar">
             <div className="search"><span>⌕</span><input value={search} onChange={e => {setSearch(e.target.value);setPage(1)}} placeholder="Search tasks..."/>{search && <button onClick={() => setSearch("")}>×</button>}</div>
