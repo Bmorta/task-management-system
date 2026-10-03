@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1000">
+<defs>
+<linearGradient id="desk" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#303136"/><stop offset="1" stop-color="#121317"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe0bd"/><stop offset=".5" stop-color="#f0a064"/><stop offset="1" stop-color="#d86a24"/></linearGradient>
+</defs>
+<rect width="900" height="1000" fill="#15161a"/>
+<path fill="#202126" d="M410-40h570v1080H530L300 710z"/>
+<path fill="url(#gold)" d="M560-40h190L430 440l170 560H430L260 450z" opacity=".95"/>
+<path fill="#2a2b30" d="M465 560h440v440H570z" transform="rotate(-18 465 560)"/>
+<path fill="#0d0e11" d="M465 575h470v330H465z" transform="rotate(-18 465 575)"/>
+<path fill="#34363b" d="M500 850h390v35H500z" transform="rotate(-18 500 850)"/>
+<ellipse cx="760" cy="190" rx="110" ry="65" fill="#1b1d20"/>
+<path fill="#496243" d="M740 210c-40-110 20-160 48-175 12 67-5 116-48 175zm20 4c30-105 95-114 126-104-31 70-75 91-126 104zm-8-1c-83-48-116-10-130 21 55 23 97 7 130-21z"/>
+<rect x="410" y="410" width="150" height="8" rx="4" fill="#111216" transform="rotate(-18 410 410)"/>
+</svg>
