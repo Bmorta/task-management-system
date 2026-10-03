@@ -78,62 +78,72 @@ function AuthShell({ mode, onModeChange, onAuthenticated, theme, onToggleTheme }
     }
   }
 
-  return <main className={`auth-page ${theme === "dark" ? "theme-dark" : ""}`}>
-    <div className="auth-orbit orbit-one"></div><div className="auth-orbit orbit-two"></div>
-    <section className="auth-layout">
-      <div className="auth-story">
-        <Brand />
-        <div className="story-copy">
-          <p className="eyebrow">YOUR DAY. YOUR FLOW.</p>
-          <h1>Turn busy days into <em>clear progress.</em></h1>
-          <p>One focused workspace for office teams and students to plan, prioritize, and finish what matters.</p>
-          <div className="feature-stack">
-            <div><span>✓</span><div><strong>Plan with clarity</strong><small>Priorities, due dates, and simple status tracking.</small></div></div>
-            <div><span>↗</span><div><strong>See your progress</strong><small>A dashboard designed around your everyday work.</small></div></div>
-            <div><span>⌁</span><div><strong>Keep it personal</strong><small>Your account keeps your tasks in your own workspace.</small></div></div>
+  return <main className={`auth-page auth-reference-page ${theme === "dark" ? "theme-dark" : ""}`}>
+    <div className="auth-reference-shell">
+      <section className="auth-reference-story">
+        <div className="auth-reference-photo"></div>
+        <div className="auth-reference-overlay"></div>
+        <div className="auth-story-content">
+          <Brand />
+          <div className="story-copy">
+            <p className="eyebrow">YOUR DAY. YOUR FLOW.</p>
+            <h1>Turn busy days<br/>into <em>clear<br className="desktop-break"/> progress.</em></h1>
+            <p>A focused workspace to plan, prioritize, and finish what matters — for teams and individuals.</p>
+            <div className="feature-stack">
+              <div><span>✓</span><div><strong>Plan with clarity</strong><small>Organize your tasks, due dates, and priorities.</small></div></div>
+              <div><span>▮</span><div><strong>Track your progress</strong><small>See what's done and what's next.</small></div></div>
+              <div><span>♟</span><div><strong>Work better together</strong><small>Stay aligned and productive.</small></div></div>
+            </div>
           </div>
         </div>
-        <small className="auth-foot">Built for focused work & meaningful progress.</small>
-      </div>
+      </section>
 
-      <div className="auth-card-wrap"><ThemeToggle theme={theme} onToggle={onToggleTheme} />
+      <section className="auth-reference-card">
+        <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         <div className="auth-card">
           <div className="mobile-brand"><Brand compact /></div>
           <div className="auth-heading">
             <span className="auth-badge">{signup ? "NEW ACCOUNT" : "WELCOME BACK"}</span>
-            <h2>{signup ? "Create your workspace" : "Ready to get things done?"}</h2>
-            <p>{signup ? "Set up your profile and start organizing your day." : "Sign in to continue to your personal dashboard."}</p>
+            <h2>{signup ? <>Create your <span>TaskFlow</span> account</> : <>Sign in to <span>TaskFlow</span></>}</h2>
+            <p>{signup ? "Set up your profile and start organizing your day." : "Continue to your workspace and keep your tasks moving."}</p>
           </div>
 
           {error && <div className="auth-error"><span>!</span>{error}</div>}
 
-          <form className="auth-form" onSubmit={submit}>
+          <form className="auth-form auth-reference-form" onSubmit={submit}>
             {signup && <div className="form-grid">
               <label>First name<input required value={form.firstName} onChange={e=>set("firstName",e.target.value)} placeholder="Brigitte"/></label>
               <label>Last name<input required value={form.lastName} onChange={e=>set("lastName",e.target.value)} placeholder="Morta"/></label>
             </div>}
-            <label>Email address<input type="email" required value={form.email} onChange={e=>set("email",e.target.value)} placeholder="you@example.com"/></label>
+            <label>Email address<div className="input-shell"><span>✉</span><input type="email" required value={form.email} onChange={e=>set("email",e.target.value)} placeholder="you@example.com"/><i>•••</i></div></label>
             {signup && <div className="form-grid">
               <label>Phone <small>optional</small><input value={form.phone} onChange={e=>set("phone",e.target.value)} placeholder="+63 9XX XXX XXXX"/></label>
               <label>{form.accountType === "Student" ? "School / Program" : "Department"} <small>optional</small><input value={form.department} onChange={e=>set("department",e.target.value)} placeholder={form.accountType === "Student" ? "BSIT" : "Marketing"}/></label>
             </div>}
             {signup && <label>Account type<select value={form.accountType} onChange={e=>set("accountType",e.target.value)}><option>Office</option><option>Student</option></select></label>}
-            <label>Password<input type={showPassword ? "text" : "password"} minLength="6" required value={form.password} onChange={e=>set("password",e.target.value)} placeholder="At least 6 characters"/></label>
+            <label>Password<div className="input-shell"><span>▣</span><input type={showPassword ? "text" : "password"} minLength="6" required value={form.password} onChange={e=>set("password",e.target.value)} placeholder="At least 6 characters"/><i>•••</i></div></label>
             {signup && <label>Confirm password<input type={showPassword ? "text" : "password"} minLength="6" required value={form.confirmPassword} onChange={e=>set("confirmPassword",e.target.value)} placeholder="Repeat your password"/></label>}
-            <label className="check-label"><input type="checkbox" checked={showPassword} onChange={e=>setShowPassword(e.target.checked)}/><span>Show password</span></label>
+            <div className="auth-options">
+              <label className="check-label"><input type="checkbox" checked={showPassword} onChange={e=>setShowPassword(e.target.checked)}/><span>Show password</span></label>
+              {!signup && <span className="forgot-link">Forgot password?</span>}
+            </div>
             <button className="auth-submit" disabled={loading}>{loading ? "Please wait..." : signup ? "Create my account →" : "Sign in →"}</button>
           </form>
 
+          {!signup && <div className="social-area">
+            <div className="or-divider"><span>OR CONTINUE WITH</span></div>
+            <div className="social-buttons"><span><b>G</b> Google</span><span><b>▦</b> Microsoft</span><span><b>●</b> Apple</span></div>
+          </div>}
+
           <div className="auth-switch">
             <span>{signup ? "Already have an account?" : "New to TaskFlow?"}</span>
-            <button onClick={() => { setError(""); onModeChange(signup ? "login" : "signup"); }}>{signup ? "Sign in" : "Create an account"}</button>
+            <button type="button" onClick={() => { setError(""); onModeChange(signup ? "login" : "signup"); }}>{signup ? "Sign in" : "Create an account"}</button>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>;
 }
-
 function Profile({ user, onUserChange, onLogout }) {
   const [form, setForm] = useState({ firstName:user.firstName, lastName:user.lastName, phone:user.phone || "", department:user.department || "", accountType:user.accountType || "Office", password:"" });
   const [saving,setSaving]=useState(false);
