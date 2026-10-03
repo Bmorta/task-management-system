@@ -1,7 +1,7 @@
 const Task = require("../models/Task");
 
 async function getTasks(req,res){
-  try { res.json(await Task.find().sort({createdAt:-1})); }
+  try { res.json(await Task.find({ userId: req.user._id }).sort({createdAt:-1})); }
   catch { res.status(500).json({message:"Failed to fetch tasks."}); }
 }
 
@@ -12,6 +12,7 @@ async function createTask(req,res){
     const dueDate = req.body.dueDate ? new Date(req.body.dueDate) : null;
     if(dueDate && Number.isNaN(dueDate.getTime())) return res.status(400).json({message:"Invalid due date."});
     const task = await Task.create({
+      userId: req.user._id,
       title,
       description: typeof req.body.description === "string" ? req.body.description.trim() : "",
       priority: ["Low","Medium","High"].includes(req.body.priority) ? req.body.priority : "Medium",
@@ -25,7 +26,7 @@ async function createTask(req,res){
 
 async function updateTask(req,res){
   try {
-    const task = await Task.findById(req.params.id);
+    const task = await Task.findOne({ _id: req.params.id, userId: req.user._id });
     if(!task) return res.status(404).json({message:"Task not found."});
 
     if(typeof req.body.title === "string"){
@@ -61,7 +62,7 @@ async function updateTask(req,res){
 
 async function deleteTask(req,res){
   try {
-    const task=await Task.findByIdAndDelete(req.params.id);
+    const task=await Task.findOneAndDelete({ _id:req.params.id, userId:req.user._id });
     if(!task) return res.status(404).json({message:"Task not found."});
     res.json({message:"Task deleted successfully."});
   } catch(error) {
