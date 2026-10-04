@@ -19,16 +19,28 @@ async function signup(req, res) {
     const lastName = typeof req.body.lastName === "string" ? req.body.lastName.trim() : "";
     const email = normalizeEmail(req.body.email);
     const password = typeof req.body.password === "string" ? req.body.password : "";
+    const username = typeof req.body.username === "string"
+      ? req.body.username.trim().replace(/^@/, "").toLowerCase()
+      : "";
 
     if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({ message: "Please complete all required fields." });
     }
     if (password.length < 6) return res.status(400).json({ message: "Password must be at least 6 characters." });
 
+    if (username && (username.length < 3 || !/^[a-z0-9._-]+$/.test(username))) {
+      return res.status(400).json({ message: "Username must be at least 3 characters and use only letters, numbers, dots, underscores, or hyphens." });
+    }
+
     const exists = await User.findOne({ email });
     if (exists) return res.status(409).json({ message: "An account with this email already exists." });
 
+    if (username && await User.findOne({ username })) {
+      return res.status(409).json({ message: "That username is already taken." });
+    }
+
     const user = await User.create({
+      username: username || undefined,
       firstName,
       lastName,
       email,
