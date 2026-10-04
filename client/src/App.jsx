@@ -218,7 +218,11 @@ function Dashboard({ user, onLogout, onProfile }) {
 }
 
 function App() {
-  const [auth,setAuth]=useState(null),[authMode,setAuthMode]=useState("login"),[view,setView]=useState("dashboard"),[checking,setChecking]=useState(true);
+  const [auth, setAuth] = useState(null);
+  const [authMode, setAuthMode] = useState("login");
+  const [view, setView] = useState("dashboard");
+  const [checking, setChecking] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme,setTheme]=useState(()=>localStorage.getItem("taskflow_theme")||"light");
   function toggleTheme(){setTheme(previous=>{const next=previous==="dark"?"light":"dark";localStorage.setItem("taskflow_theme",next);return next})}
   useEffect(()=>{const token=localStorage.getItem(TOKEN_KEY);if(!token){setChecking(false);return}api("/auth/me",{},token).then(data=>setAuth(data.user)).catch(()=>{localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY)}).finally(()=>setChecking(false))},[]);
@@ -227,7 +231,122 @@ function App() {
   if(!auth)return <AuthShell mode={authMode} onModeChange={setAuthMode} onAuthenticated={setAuth} theme={theme} onToggleTheme={toggleTheme}/>;
 
   return <main className={`app-shell ${theme === "dark" ? "theme-dark" : ""}`}>
-    <nav className="navbar"><Brand/><div className="nav-center"><button className={view==="dashboard"?"active":""} onClick={()=>setView("dashboard")}>Dashboard</button><button className={view==="profile"?"active":""} onClick={()=>setView("profile")}>My Profile</button>{auth.role==="admin"&&<button className={view==="users"?"active":""} onClick={()=>setView("users")}>Users</button>}</div><div className="nav-tools"><ThemeToggle theme={theme} onToggle={toggleTheme}/><div className="nav-user"><div><strong>Hello, {auth.firstName}!</strong><span>{dateTime(new Date())}</span></div><button className="avatar-button" onClick={()=>setView("profile")}><span className="profile-avatar">{initials(auth)}</span></button><button className="logout-btn" onClick={logout}>Log out</button></div></div></nav>
+    <nav className="navbar">
+      <Brand />
+
+      <div className="nav-center">
+        <button
+          className={view === "dashboard" ? "active" : ""}
+          onClick={() => {
+            setView("dashboard");
+            setMobileMenuOpen(false);
+          }}
+        >
+          Dashboard
+        </button>
+        <button
+          className={view === "profile" ? "active" : ""}
+          onClick={() => {
+            setView("profile");
+            setMobileMenuOpen(false);
+          }}
+        >
+          My Profile
+        </button>
+        {auth.role === "admin" && (
+          <button
+            className={view === "users" ? "active" : ""}
+            onClick={() => {
+              setView("users");
+              setMobileMenuOpen(false);
+            }}
+          >
+            Users
+          </button>
+        )}
+      </div>
+
+      <div className="nav-tools">
+        <ThemeToggle theme={theme} onToggle={toggleTheme} />
+
+        <div className="nav-user">
+          <div>
+            <strong>Hello, {auth.firstName}!</strong>
+            <span>{dateTime(new Date())}</span>
+          </div>
+
+          <button
+            className="avatar-button"
+            onClick={() => {
+              setView("profile");
+              setMobileMenuOpen(false);
+            }}
+            aria-label="Open profile"
+          >
+            <span className="profile-avatar">{initials(auth)}</span>
+          </button>
+
+          <button className="logout-btn" onClick={logout}>
+            Log out
+          </button>
+        </div>
+
+        <button
+          className={`mobile-menu-button ${mobileMenuOpen ? "open" : ""}`}
+          type="button"
+          onClick={() => setMobileMenuOpen(previous => !previous)}
+          aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={mobileMenuOpen}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      {mobileMenuOpen && (
+        <div className="mobile-nav-menu">
+          <button
+            className={view === "dashboard" ? "active" : ""}
+            onClick={() => {
+              setView("dashboard");
+              setMobileMenuOpen(false);
+            }}
+          >
+            Dashboard
+          </button>
+          <button
+            className={view === "profile" ? "active" : ""}
+            onClick={() => {
+              setView("profile");
+              setMobileMenuOpen(false);
+            }}
+          >
+            My Profile
+          </button>
+          {auth.role === "admin" && (
+            <button
+              className={view === "users" ? "active" : ""}
+              onClick={() => {
+                setView("users");
+                setMobileMenuOpen(false);
+              }}
+            >
+              Users
+            </button>
+          )}
+          <button
+            className="mobile-logout"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              logout();
+            }}
+          >
+            Log out
+          </button>
+        </div>
+      )}
+    </nav>
     {view==="dashboard"&&<Dashboard user={auth} onLogout={logout}/>}
     {view==="profile"&&<Profile user={auth} onUserChange={setAuth} onLogout={logout}/>}
     {view==="users"&&auth.role==="admin"&&<AdminUsers currentUser={auth}/>}
