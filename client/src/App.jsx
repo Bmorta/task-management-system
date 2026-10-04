@@ -130,11 +130,6 @@ function AuthShell({ mode, onModeChange, onAuthenticated, theme, onToggleTheme }
             <button className="auth-submit" disabled={loading}>{loading ? "Please wait..." : signup ? "Create my account →" : "Sign in →"}</button>
           </form>
 
-          {!signup && <div className="social-area">
-            <div className="or-divider"><span>OR CONTINUE WITH</span></div>
-            <div className="social-buttons"><span><b>G</b> Google</span><span><b>▦</b> Microsoft</span><span><b>●</b> Apple</span></div>
-          </div>}
-
           <div className="auth-switch">
             <span>{signup ? "Already have an account?" : "New to TaskMate?"}</span>
             <button type="button" onClick={() => { setError(""); onModeChange(signup ? "login" : "signup"); }}>{signup ? "Sign in" : "Create an account"}</button>
