@@ -1,7 +1,25 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
+function fallbackUsername(email) {
+  return String(email || "")
+    .split("@")[0]
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]/g, "")
+    .slice(0, 30);
+}
+
 const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    unique: true,
+    sparse: true,
+    trim: true,
+    lowercase: true,
+    minlength: 3,
+    maxlength: 30,
+    match: /^[a-z0-9._-]+$/
+  },
   firstName: { type: String, required: true, trim: true, maxlength: 60 },
   lastName: { type: String, required: true, trim: true, maxlength: 60 },
   email: { type: String, required: true, unique: true, lowercase: true, trim: true },
@@ -26,6 +44,7 @@ userSchema.methods.comparePassword = function(password) {
 userSchema.methods.toSafeObject = function() {
   return {
     _id: this._id,
+    username: this.username || fallbackUsername(this.email),
     firstName: this.firstName,
     lastName: this.lastName,
     email: this.email,
