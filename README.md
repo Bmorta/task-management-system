@@ -1,6 +1,6 @@
 # Task Management System
 
-A modern full-stack task management system built for **office professionals and students**. TaskFlow combines React, Node.js, Express, MongoDB, secure authentication, personal task workspaces, profiles, and administrator user management.
+A modern full-stack task management system built for **office professionals and students**. TaskMate combines React, Node.js, Express, MongoDB, secure authentication, personal task workspaces, profiles, and administrator user management.
 
 ## 🚀 Live Demo
 
