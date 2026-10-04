@@ -487,7 +487,7 @@ async function respondToInvitation(req, res) {
 
       if (accepted && isCurrentAssignment) {
         task.assignmentStatus = "accepted";
-      } else if (!accepted || !isCurrentAssignment) {
+      } else if (!accepted && isCurrentAssignment) {
         task.assignmentStatus = "declined";
         task.assignee = null;
       }
