@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function TaskForm({ task, onSubmit, onCancel }) {
+function TaskForm({ task, onSubmit, onCancel, error }) {
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -134,6 +134,16 @@ function TaskForm({ task, onSubmit, onCancel }) {
           Assignment and collaboration require the other user to accept the invitation first.
         </p>
       </div>
+
+      {error && (
+        <div className="task-modal-error" role="alert">
+          <span>!</span>
+          <div>
+            <strong>Unable to save task</strong>
+            <p>{error}</p>
+          </div>
+        </div>
+      )}
 
       <div className="modal-actions">
         <button type="button" className="secondary" onClick={onCancel}>
