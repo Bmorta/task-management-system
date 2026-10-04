@@ -839,3 +839,52 @@ h1,h2,h3,strong,.brand strong{font-family:"Space Grotesk",sans-serif}.app-shell{
     flex: 1;
   }
 }
+
+
+/* Task form validation message - stays visible inside the modal */
+.task-modal-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 14px 0 2px;
+  padding: 11px 13px;
+  border: 1px solid #f1b8b8;
+  border-radius: 10px;
+  background: #fff3f3;
+  color: #9f2f2f;
+}
+
+.task-modal-error > span {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 20px;
+  border-radius: 50%;
+  background: #c94343;
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.task-modal-error strong {
+  display: block;
+  margin-bottom: 2px;
+  font-size: .74rem;
+}
+
+.task-modal-error p {
+  margin: 0;
+  font-size: .7rem;
+  line-height: 1.45;
+}
+
+.theme-dark .task-modal-error {
+  border-color: #693c3c;
+  background: #321f21;
+  color: #ffb8b8;
+}
+
+.theme-dark .task-modal-error > span {
+  background: #b94141;
+}
