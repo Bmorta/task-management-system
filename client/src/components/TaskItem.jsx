@@ -6,7 +6,7 @@ function date(value) {
   }).format(new Date(value));
 }
 
-function TaskItem({ task, onToggle, onDelete, onEdit }) {
+function TaskItem({ task, onToggle, onDelete, onEdit, canManage }) {
   const overdue =
     !task.completed &&
     task.dueDate &&
@@ -65,14 +65,16 @@ function TaskItem({ task, onToggle, onDelete, onEdit }) {
         </div>
       </div>
 
-      <div className="actions">
-        <button className="edit" onClick={() => onEdit(task)}>
-          Edit
-        </button>
-        <button className="delete" onClick={() => onDelete(task)}>
-          Delete
-        </button>
-      </div>
+      {canManage && (
+        <div className="actions">
+          <button className="edit" onClick={() => onEdit(task)}>
+            Edit
+          </button>
+          <button className="delete" onClick={() => onDelete(task)}>
+            Delete
+          </button>
+        </div>
+      )}
     </li>
   );
 }
