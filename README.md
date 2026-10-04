@@ -152,7 +152,7 @@ After changing frontend environment variables, redeploy the frontend because Vit
 
 ## 🔒 Security Notes
 
-Passwords are hashed before storage. Authentication is enforced on task and profile endpoints. Users cannot access another user's tasks through the API. Administrator endpoints require an administrator role.
+Passwords are hashed before storage. Authentication is enforced on task, invitation, user-search, and profile endpoints. Task access is limited to owners and users whose assignment or collaboration invitation has been accepted. Administrator endpoints require an administrator role.
 
 ## 🎓 Capstone 3
 
