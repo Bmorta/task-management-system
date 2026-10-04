@@ -27,6 +27,12 @@ h1,h2,h3,strong,.brand strong{font-family:"Space Grotesk",sans-serif}.app-shell{
 .nav-user .avatar-button{
   align-self:center;
 }
+.nav-user .profile-avatar{
+  display:grid;
+  place-items:center;
+  line-height:1;
+  overflow:hidden;
+}
 .profile-avatar{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#e56400,#705125);color:#fff;font-size:.7rem;font-weight:800;box-shadow:none}.nav-user .profile-avatar{box-shadow:none}.profile-avatar.large{width:82px;height:82px;border-radius:24px;font-size:1.4rem;margin:auto}
 .dashboard,.page-section{width:min(1250px,calc(100% - 28px));margin:auto;padding:45px 0 65px}.hero{display:flex;justify-content:space-between;align-items:center;gap:28px;margin-bottom:28px}.eyebrow{margin:0 0 8px;color:#e56400;font-size:.68rem;font-weight:800;letter-spacing:.14em}.hero h1{margin:0;font-size:clamp(2.5rem,5vw,4.7rem);line-height:.98;letter-spacing:-.05em}.hero h1 em{color:#705125;font-style:normal}.hero p:last-child{color:#737882;line-height:1.7;max-width:590px}.progress-card{min-width:270px;padding:18px;display:flex;align-items:center;gap:15px;border:1px solid #e5e6e9;border-radius:20px;background:#fff;box-shadow:0 14px 40px rgba(35,35,42,.07)}.progress-card>div:last-child strong,.progress-card>div:last-child span{display:block}.progress-card>div:last-child span{color:#7b8089;font-size:.75rem;margin-top:4px}.progress-circle{--progress:0;width:78px;height:78px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(#e56400 calc(var(--progress)*1%),#e8eaed 0)}.progress-circle:before{content:"";position:absolute;inset:7px;border-radius:50%;background:#fff}.progress-circle strong,.progress-circle span{position:relative;display:block;text-align:center}.progress-circle span{
   font-size:.55rem;
