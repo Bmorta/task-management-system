@@ -655,3 +655,17 @@ h1,h2,h3,strong,.brand strong{font-family:"Space Grotesk",sans-serif}.app-shell{
     color: #f28b82;
   }
 }
+
+
+/* Mobile navigation visibility */
+@media (max-width: 760px) {
+  .navbar .mobile-menu-button {
+    display: flex !important;
+    flex-shrink: 0;
+  }
+
+  .navbar .nav-tools {
+    display: flex;
+    align-items: center;
+  }
+}
