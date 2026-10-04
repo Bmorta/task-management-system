@@ -195,6 +195,7 @@ async function createTask(req, res) {
 
       await task.save();
     } catch (error) {
+      await TaskInvitation.deleteMany({ taskId: task._id });
       await Task.findByIdAndDelete(task._id);
 
       return res.status(error.statusCode || 500).json({
@@ -307,6 +308,12 @@ async function updateTask(req, res) {
       if (!username) {
         task.assignee = null;
         task.assignmentStatus = "none";
+
+        await TaskInvitation.deleteMany({
+          taskId: task._id,
+          type: "assignment",
+          status: "pending"
+        });
       } else {
         const assignee = await findUserByUsername(username);
 
@@ -474,9 +481,13 @@ async function respondToInvitation(req, res) {
     await invitation.save();
 
     if (invitation.type === "assignment") {
-      if (accepted) {
+      const isCurrentAssignment =
+        task.assignee &&
+        task.assignee.toString() === req.user._id.toString();
+
+      if (accepted && isCurrentAssignment) {
         task.assignmentStatus = "accepted";
-      } else {
+      } else if (!accepted || !isCurrentAssignment) {
         task.assignmentStatus = "declined";
         task.assignee = null;
       }
