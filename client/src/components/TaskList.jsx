@@ -1,6 +1,6 @@
 import TaskItem from "./TaskItem.jsx";
 
-function TaskList({ tasks, onToggle, onDelete, onEdit, onAdd }) {
+function TaskList({ tasks, onToggle, onDelete, onEdit, onAdd, canManage }) {
   if (tasks.length === 0) {
     return (
       <div className="empty-state">
@@ -20,6 +20,7 @@ function TaskList({ tasks, onToggle, onDelete, onEdit, onAdd }) {
           onToggle={onToggle}
           onDelete={onDelete}
           onEdit={onEdit}
+          canManage={canManage(task)}
         />
       ))}
     </ul>
