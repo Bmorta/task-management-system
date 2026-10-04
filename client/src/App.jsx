@@ -35,8 +35,8 @@ async function api(path, options = {}, token = localStorage.getItem(TOKEN_KEY)) 
 
 function Brand({ compact = false }) {
   return <div className={`brand ${compact ? "compact" : ""}`}>
-    <div className="brand-logo"><img src="/taskflow-logo.png" alt="TaskFlow" /></div>
-    <div><strong>TaskFlow</strong><span>Work & Study Workspace</span></div>
+    <div className="brand-logo"><img src="/taskflow-logo.png" alt="TaskMate" /></div>
+    <div><strong>TaskMate</strong><span>Work & Study Workspace</span></div>
   </div>;
 }
 
@@ -104,7 +104,7 @@ function AuthShell({ mode, onModeChange, onAuthenticated, theme, onToggleTheme }
           <div className="mobile-brand"><Brand compact /></div>
           <div className="auth-heading">
             <span className="auth-badge">{signup ? "NEW ACCOUNT" : "WELCOME BACK"}</span>
-            <h2>{signup ? <>Create your <span>TaskFlow</span> account</> : <>Sign in to <span>TaskFlow</span></>}</h2>
+            <h2>{signup ? <>Create your <span>TaskMate</span> account</> : <>Sign in to <span>TaskMate</span></>}</h2>
             <p>{signup ? "Set up your profile and start organizing your day." : "Continue to your workspace and keep your tasks moving."}</p>
           </div>
 
@@ -136,7 +136,7 @@ function AuthShell({ mode, onModeChange, onAuthenticated, theme, onToggleTheme }
           </div>}
 
           <div className="auth-switch">
-            <span>{signup ? "Already have an account?" : "New to TaskFlow?"}</span>
+            <span>{signup ? "Already have an account?" : "New to TaskMate?"}</span>
             <button type="button" onClick={() => { setError(""); onModeChange(signup ? "login" : "signup"); }}>{signup ? "Sign in" : "Create an account"}</button>
           </div>
         </div>
@@ -228,7 +228,7 @@ function App() {
   function toggleTheme(){setTheme(previous=>{const next=previous==="dark"?"light":"dark";localStorage.setItem("taskflow_theme",next);return next})}
   useEffect(()=>{const token=localStorage.getItem(TOKEN_KEY);if(!token){setChecking(false);return}api("/auth/me",{},token).then(data=>setAuth(data.user)).catch(()=>{localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY)}).finally(()=>setChecking(false))},[]);
   function logout(){localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY);setAuth(null);setView("dashboard");setAuthMode("login")}
-  if(checking)return <div className={`loading-screen ${theme === "dark" ? "theme-dark" : ""}`}><div className="loading-logo"><img src="/taskflow-logo.png" alt="TaskFlow" /></div><strong>Loading TaskFlow</strong><span>Preparing your workspace...</span></div>;
+  if(checking)return <div className={`loading-screen ${theme === "dark" ? "theme-dark" : ""}`}><div className="loading-logo"><img src="/taskflow-logo.png" alt="TaskFlow" /></div><strong>Loading TaskMate</strong><span>Preparing your workspace...</span></div>;
   if(!auth)return <AuthShell mode={authMode} onModeChange={setAuthMode} onAuthenticated={setAuth} theme={theme} onToggleTheme={toggleTheme}/>;
 
   return <main className={`app-shell ${theme === "dark" ? "theme-dark" : ""}`}>
@@ -236,7 +236,7 @@ function App() {
     {view==="dashboard"&&<Dashboard user={auth} onLogout={logout}/>}
     {view==="profile"&&<Profile user={auth} onUserChange={setAuth} onLogout={logout}/>}
     {view==="users"&&auth.role==="admin"&&<AdminUsers currentUser={auth}/>}
-    <footer className="site-footer"><span>TaskFlow</span><span>Focused work. Clear progress.</span></footer>
+    <footer className="site-footer"><span>TaskMate</span><span>Focused work. Clear progress.</span></footer>
   </main>;
 }
 
