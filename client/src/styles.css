@@ -669,3 +669,173 @@ h1,h2,h3,strong,.brand strong{font-family:"Space Grotesk",sans-serif}.app-shell{
     align-items: center;
   }
 }
+
+
+/* Task assignment and collaboration */
+.collaboration-fields {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #e5e6e9;
+  border-radius: 12px;
+  background: #fafbfc;
+}
+
+.collaboration-help {
+  margin: 0;
+  color: #7b8089;
+  font-size: .7rem;
+  line-height: 1.5;
+}
+
+.task-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 9px 0 4px;
+}
+
+.task-members span {
+  padding: 5px 8px;
+  border-radius: 7px;
+  background: #f3f4f6;
+  color: #626773;
+  font-size: .68rem;
+}
+
+.task-members strong {
+  color: #35373d;
+}
+
+.invitation-panel {
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid #e3e4e7;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 12px 35px rgba(35, 35, 42, .05);
+}
+
+.invitation-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 14px;
+}
+
+.invitation-head h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.invitation-head p:not(.eyebrow) {
+  margin: 5px 0 0;
+  color: #7b8089;
+  font-size: .75rem;
+}
+
+.invitation-count {
+  min-width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff1e7;
+  color: #e56400;
+  font-size: .75rem;
+  font-weight: 800;
+}
+
+.invitation-list {
+  display: grid;
+  gap: 10px;
+}
+
+.invitation-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 14px;
+  border: 1px solid #e5e6e9;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.invitation-item strong {
+  color: #23232a;
+}
+
+.invitation-item p {
+  margin: 4px 0;
+  color: #626773;
+  font-size: .75rem;
+  line-height: 1.5;
+}
+
+.invitation-item small {
+  color: #858a94;
+  font-size: .66rem;
+}
+
+.invitation-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.theme-dark .collaboration-fields {
+  border-color: #3b3e46;
+  background: #24262c;
+}
+
+.theme-dark .collaboration-help {
+  color: #a6a9b0;
+}
+
+.theme-dark .task-members span {
+  background: #2b2d33;
+  color: #b8bbc3;
+}
+
+.theme-dark .task-members strong {
+  color: #f0f1f3;
+}
+
+.theme-dark .invitation-panel {
+  background: rgba(30, 32, 38, .94);
+  border-color: #383a42;
+}
+
+.theme-dark .invitation-head p:not(.eyebrow) {
+  color: #a6a9b0;
+}
+
+.theme-dark .invitation-item {
+  background: #24262c;
+  border-color: #3b3e46;
+}
+
+.theme-dark .invitation-item strong {
+  color: #f3f4f6;
+}
+
+.theme-dark .invitation-item p {
+  color: #b2b5bd;
+}
+
+@media (max-width: 600px) {
+  .invitation-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .invitation-actions {
+    width: 100%;
+  }
+
+  .invitation-actions button {
+    flex: 1;
+  }
+}
