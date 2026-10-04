@@ -19,14 +19,17 @@ A modern full-stack task management system built for **office professionals and 
 
 ### 👤 Personal Workspace
 - Personalized greeting using the logged-in user's name
-- Each user sees only their own tasks
-- Add, edit, complete, and delete tasks
+- Each user sees their own tasks plus tasks assigned to them or shared with them after accepting an invitation
+- Add, edit, complete, and delete owned tasks
+- Assign a task to another user by username with acceptance required
+- Invite collaborators by username with accept/decline workflow
+- Collaborators and assignees can complete shared tasks while the owner controls task details
 - Task descriptions, priority, due date, created date, and completed date
 - Search, sorting, status filters, overdue filter, progress tracking, and pagination
 
 ### 🪪 Profile
 - View your own profile
-- Update name, phone, department/program, account type
+- Update username, name, phone, department/program, account type
 - Change password
 - Regular users can only access their own profile
 
@@ -79,6 +82,7 @@ task-management-system/
 │   ├── middleware/auth.js
 │   ├── models/
 │   │   ├── Task.js
+│   │   ├── TaskInvitation.js
 │   │   └── User.js
 │   ├── routes/
 │   │   ├── authRoutes.js
