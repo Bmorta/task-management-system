@@ -2554,3 +2554,90 @@ h1,h2,h3,strong,.brand strong {
 .theme-dark .task-modal-error > span {
   background: #b94141;
 }
+
+
+/* Task success notification */
+.success-toast {
+  position: fixed;
+  top: 92px;
+  right: 24px;
+  z-index: 100;
+  width: min(360px, calc(100vw - 32px));
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px 14px;
+  border: 1px solid #b9dfc3;
+  border-radius: 12px;
+  background: #f0faf3;
+  color: #286b3a;
+  box-shadow: 0 14px 35px rgba(35, 35, 42, 0.14);
+  animation: toastIn 0.22s ease;
+}
+
+.success-toast > span {
+  width: 23px;
+  height: 23px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 23px;
+  border-radius: 50%;
+  background: #2e7d4f;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.success-toast strong {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 0.74rem;
+}
+
+.success-toast p {
+  margin: 0;
+  color: #4f7659;
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+.success-toast button {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: #5f8067;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.theme-dark .success-toast {
+  border-color: #315a3d;
+  background: #1d3023;
+  color: #a9e2b8;
+}
+
+.theme-dark .success-toast p,
+.theme-dark .success-toast button {
+  color: #9fc5a8;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) translateX(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .success-toast {
+    top: 82px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+  }
+}
