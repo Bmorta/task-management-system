@@ -2641,3 +2641,87 @@ h1,h2,h3,strong,.brand strong {
     width: auto;
   }
 }
+
+
+/* Clean modal scrolling and compact admin form */
+.modal {
+  max-height: calc(100vh - 28px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.modal::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.admin-modal {
+  padding: 22px;
+}
+
+.admin-modal .modal-head {
+  margin-bottom: 16px;
+}
+
+.admin-modal .task-form {
+  gap: 11px;
+}
+
+.admin-modal .task-form input,
+.admin-modal .task-form select {
+  padding: 9px 11px;
+}
+
+.admin-modal .task-form label {
+  gap: 5px;
+}
+
+.admin-modal .modal-actions {
+  margin-top: 2px;
+}
+
+@media (max-height: 800px) and (min-width: 761px) {
+  .admin-modal {
+    padding: 18px 20px;
+  }
+
+  .admin-modal .modal-head {
+    margin-bottom: 12px;
+  }
+
+  .admin-modal .task-form {
+    gap: 8px;
+  }
+
+  .admin-modal .task-form input,
+  .admin-modal .task-form select {
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 760px) {
+  .modal-backdrop {
+    padding: 10px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .modal-backdrop::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .modal {
+    max-height: calc(100vh - 20px);
+    padding: 18px;
+  }
+
+  .admin-modal {
+    padding: 18px;
+  }
+}
