@@ -68,6 +68,23 @@ function AuthShell({ mode, onModeChange, onAuthenticated, theme, onToggleTheme }
           phone: form.phone, department: form.department, accountType: form.accountType
         } : { email: form.email, password: form.password })
       }, null);
+      if (signup) {
+        setForm({
+          firstName: "",
+          lastName: "",
+          username: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          phone: "",
+          department: "",
+          accountType: "Office"
+        });
+        onModeChange("login");
+        setError("Account created successfully. Please sign in to continue.");
+        return;
+      }
+
       localStorage.setItem(TOKEN_KEY, data.token);
       localStorage.setItem(USER_KEY, JSON.stringify(data.user));
       onAuthenticated(data.user);
