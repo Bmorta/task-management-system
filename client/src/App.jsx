@@ -157,6 +157,148 @@ function AuthShell({ mode, onModeChange, onAuthenticated, theme, onToggleTheme }
     </div>
   </main>;
 }
+function NotificationBell() {
+  const [open, setOpen] = useState(false);
+  const [invitations, setInvitations] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  async function loadInvitations() {
+    try {
+      const data = await api("/tasks/invitations");
+      setInvitations(data);
+    } catch {
+      setInvitations([]);
+    }
+  }
+
+  useEffect(() => {
+    loadInvitations();
+
+    const timer = setInterval(loadInvitations, 30000);
+    return () => clearInterval(timer);
+  }, []);
+
+  async function respond(id, action) {
+    setLoading(true);
+
+    try {
+      await api(`/tasks/invitations/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ action })
+      });
+
+      setInvitations(previous =>
+        previous.filter(invitation => invitation._id !== id)
+      );
+
+      window.dispatchEvent(new Event("task-invitation-updated"));
+    } catch {
+      await loadInvitations();
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="notification-wrap">
+      <button
+        className={`notification-bell ${open ? "active" : ""}`}
+        type="button"
+        onClick={() => {
+          setOpen(previous => !previous);
+          loadInvitations();
+        }}
+        aria-label="Task invitations"
+        aria-expanded={open}
+        title="Task invitations"
+      >
+        <span className="bell-icon">♢</span>
+        {invitations.length > 0 && (
+          <span className="notification-count">
+            {invitations.length > 9 ? "9+" : invitations.length}
+          </span>
+        )}
+      </button>
+
+      {open && (
+        <div className="notification-dropdown">
+          <div className="notification-header">
+            <div>
+              <strong>Notifications</strong>
+              <span>Task invitations</span>
+            </div>
+            {invitations.length > 0 && (
+              <span className="notification-header-count">
+                {invitations.length}
+              </span>
+            )}
+          </div>
+
+          {invitations.length === 0 ? (
+            <div className="notification-empty">
+              <span>✓</span>
+              <strong>You're all caught up</strong>
+              <p>No pending task invitations.</p>
+            </div>
+          ) : (
+            <div className="notification-list">
+              {invitations.map(invitation => (
+                <div className="notification-item" key={invitation._id}>
+                  <div className="notification-item-icon">
+                    {invitation.type === "assignment" ? "→" : "＋"}
+                  </div>
+
+                  <div className="notification-item-content">
+                    <strong>
+                      {invitation.type === "assignment"
+                        ? "Task assignment"
+                        : "Collaboration request"}
+                    </strong>
+
+                    <p>
+                      <b>
+                        {invitation.senderId?.firstName}{" "}
+                        {invitation.senderId?.lastName}
+                      </b>{" "}
+                      invited you to{" "}
+                      <b>{invitation.taskId?.title || "a task"}</b>.
+                    </p>
+
+                    <small>
+                      {invitation.type === "assignment"
+                        ? "You will be responsible for completing this task."
+                        : "Accept to become a collaborator on this task."}
+                    </small>
+
+                    <div className="notification-actions">
+                      <button
+                        type="button"
+                        className="notification-decline"
+                        disabled={loading}
+                        onClick={() => respond(invitation._id, "decline")}
+                      >
+                        Decline
+                      </button>
+                      <button
+                        type="button"
+                        className="notification-accept"
+                        disabled={loading}
+                        onClick={() => respond(invitation._id, "accept")}
+                      >
+                        Accept
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Profile({ user, onUserChange, onLogout }) {
   const [form, setForm] = useState({ username:user.username || "", firstName:user.firstName, lastName:user.lastName, phone:user.phone || "", department:user.department || "", accountType:user.accountType || "Office", password:"" });
   const [saving,setSaving]=useState(false);
@@ -182,6 +324,19 @@ function Profile({ user, onUserChange, onLogout }) {
 }
 
 function AdminUsers({ currentUser }) {
+  useEffect(() => {
+    function handleEscape(event) {
+      if (event.key === "Escape" && show) {
+        setShow(false);
+        setError("");
+      }
+    }
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [show]);
+
+
   const empty={username:"",firstName:"",lastName:"",email:"",password:"",phone:"",department:"",accountType:"Office",role:"user",active:true};
   const [users,setUsers]=useState([]); const [form,setForm]=useState(empty); const [editing,setEditing]=useState(null); const [show,setShow]=useState(false); const [loading,setLoading]=useState(true); const [error,setError]=useState(""); const [message,setMessage]=useState("");
   const set=(k,v)=>setForm(p=>({...p,[k]:v}));
@@ -216,6 +371,42 @@ function AdminUsers({ currentUser }) {
 }
 
 function Dashboard({ user, onLogout, onProfile }) {
+  useEffect(() => {
+    function handleEscape(event) {
+      if (event.key !== "Escape") return;
+
+      if (modal) {
+        setModal(null);
+        setModalError("");
+        setEditingTask(null);
+      }
+    }
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [modal]);
+
+  useEffect(() => {
+    async function refreshAfterInvitation() {
+      try {
+        const refreshed = await api("/tasks");
+        const pending = await api("/tasks/invitations");
+        setTasks(refreshed);
+        setInvitations(pending);
+      } catch {
+        // Keep the current dashboard state if refresh fails.
+      }
+    }
+
+    window.addEventListener("task-invitation-updated", refreshAfterInvitation);
+    return () =>
+      window.removeEventListener(
+        "task-invitation-updated",
+        refreshAfterInvitation
+      );
+  }, []);
+
+
   const [tasks,setTasks]=useState([]),[filter,setFilter]=useState("All"),[search,setSearch]=useState(""),[sort,setSort]=useState("newest"),[page,setPage]=useState(1),[loading,setLoading]=useState(true),[error,setError]=useState(""),[modal,setModal]=useState(null),[modalError,setModalError]=useState(""),[successMessage,setSuccessMessage]=useState(""),[editingTask,setEditingTask]=useState(null),[invitations,setInvitations]=useState([]),[invitationLoading,setInvitationLoading]=useState(false),[now,setNow]=useState(new Date());
 
   useEffect(()=>{let alive=true;api("/tasks").then(data=>{if(alive)setTasks(data)}).catch(err=>{if(alive)setError(err.message)}).finally(()=>{if(alive)setLoading(false)});return()=>{alive=false}},[]);
@@ -304,6 +495,7 @@ function App() {
       </div>
 
       <div className="nav-tools">
+        <NotificationBell />
         <ThemeToggle theme={theme} onToggle={toggleTheme} />
 
         <div className="nav-user">
