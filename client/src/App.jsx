@@ -324,6 +324,16 @@ function Profile({ user, onUserChange, onLogout }) {
 }
 
 function AdminUsers({ currentUser }) {
+  const empty={username:"",firstName:"",lastName:"",email:"",password:"",phone:"",department:"",accountType:"Office",role:"user",active:true};
+  const [users,setUsers]=useState([]);
+  const [form,setForm]=useState(empty);
+  const [editing,setEditing]=useState(null);
+  const [show,setShow]=useState(false);
+  const [loading,setLoading]=useState(true);
+  const [error,setError]=useState("");
+  const [message,setMessage]=useState("");
+  const set=(k,v)=>setForm(p=>({...p,[k]:v}));
+
   useEffect(() => {
     function handleEscape(event) {
       if (event.key === "Escape" && show) {
@@ -335,11 +345,6 @@ function AdminUsers({ currentUser }) {
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   }, [show]);
-
-
-  const empty={username:"",firstName:"",lastName:"",email:"",password:"",phone:"",department:"",accountType:"Office",role:"user",active:true};
-  const [users,setUsers]=useState([]); const [form,setForm]=useState(empty); const [editing,setEditing]=useState(null); const [show,setShow]=useState(false); const [loading,setLoading]=useState(true); const [error,setError]=useState(""); const [message,setMessage]=useState("");
-  const set=(k,v)=>setForm(p=>({...p,[k]:v}));
 
   async function load(){try{setUsers(await api("/users"))}catch(err){setError(err.message)}finally{setLoading(false)}}
   useEffect(()=>{load()},[]);
@@ -371,6 +376,21 @@ function AdminUsers({ currentUser }) {
 }
 
 function Dashboard({ user, onLogout, onProfile }) {
+  const [tasks,setTasks]=useState([]);
+  const [filter,setFilter]=useState("All");
+  const [search,setSearch]=useState("");
+  const [sort,setSort]=useState("newest");
+  const [page,setPage]=useState(1);
+  const [loading,setLoading]=useState(true);
+  const [error,setError]=useState("");
+  const [modal,setModal]=useState(null);
+  const [modalError,setModalError]=useState("");
+  const [successMessage,setSuccessMessage]=useState("");
+  const [editingTask,setEditingTask]=useState(null);
+  const [invitations,setInvitations]=useState([]);
+  const [invitationLoading,setInvitationLoading]=useState(false);
+  const [now,setNow]=useState(new Date());
+
   useEffect(() => {
     function handleEscape(event) {
       if (event.key !== "Escape") return;
@@ -405,9 +425,6 @@ function Dashboard({ user, onLogout, onProfile }) {
         refreshAfterInvitation
       );
   }, []);
-
-
-  const [tasks,setTasks]=useState([]),[filter,setFilter]=useState("All"),[search,setSearch]=useState(""),[sort,setSort]=useState("newest"),[page,setPage]=useState(1),[loading,setLoading]=useState(true),[error,setError]=useState(""),[modal,setModal]=useState(null),[modalError,setModalError]=useState(""),[successMessage,setSuccessMessage]=useState(""),[editingTask,setEditingTask]=useState(null),[invitations,setInvitations]=useState([]),[invitationLoading,setInvitationLoading]=useState(false),[now,setNow]=useState(new Date());
 
   useEffect(()=>{let alive=true;api("/tasks").then(data=>{if(alive)setTasks(data)}).catch(err=>{if(alive)setError(err.message)}).finally(()=>{if(alive)setLoading(false)});return()=>{alive=false}},[]);
   useEffect(()=>{let alive=true;api("/tasks/invitations").then(data=>{if(alive)setInvitations(data)}).catch(()=>{});return()=>{alive=false}},[]);
